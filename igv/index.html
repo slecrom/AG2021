@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  
+  <link rel="shortcut icon" href="../img/favicon.ico">
+  <title>3. IGV - Analyse des génomes 2021</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
+
+  <link rel="stylesheet" href="../css/theme.css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "3. IGV";
+    var mkdocs_page_input_path = "igv.md";
+    var mkdocs_page_url = null;
+  </script>
+  
+  <script src="../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+        <a href=".." class="icon icon-home"> Analyse des génomes 2021</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="..">Accueil</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../srna/">1. Petits ARN</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../rnaseq/">2. RNAseq</a>
+                    </li>
+                </ul>
+                <ul class="current">
+                    <li class="toctree-l1 current"><a class="reference internal current" href="./">3. IGV</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#recuperez-vos-donnees-depuis-le-serveur-galaxy">Récupérez vos données depuis le serveur Galaxy</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#importer-un-genome-et-son-annotation-dans-igv">Importer un génome et son annotation dans IGV</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#importer-vos-donnees">Importer vos données</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#calcul-de-la-couverture-avec-igvtools">Calcul de la couverture avec igvtools</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#sauvegarder-vos-donnees">Sauvegarder vos données</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#ressources">Ressources</a>
+    </li>
+    </ul>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../annexes/">4. Annexes</a>
+                    </li>
+                </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="..">Analyse des génomes 2021</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="..">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>3. IGV</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  
+  <hr/>
+</div>
+
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="3-visualisation-des-resultats">3. Visualisation des résultats</h1>
+<div class="admonition attention">
+<p class="admonition-title">Objectif</p>
+<p>Le but d'utiliser IGV c'est de vous permettre de visualiser vos résultats dans un navigateur de génome. Cet outil peut non seulement afficher le génome et son annotation mais aussi de nombreuses données basées sur leurs coordonnées génomiques.</p>
+</div>
+<p>La documentation d'Integrative Genomics Viewer (IGV) est <a href="https://software.broadinstitute.org/software/igv/">accessible en ligne</a>.</p>
+<p>IGV se lance en ouvrant un terminal et en indiquant le chemin vers le logiciel :</p>
+<p><code>/Formation_AdG/IGV_2.11.2/igv.sh</code></p>
+<hr />
+<h2 id="recuperez-vos-donnees-depuis-le-serveur-galaxy">Récupérez vos données depuis le serveur Galaxy</h2>
+<p>Vous allez utiliser IGV en local sur votre machine. Il vous faut récupérer un certain nombre de fichier depuis votre serveur Galaxy. Pour cela vous devez cliquez sur l'icône en forme de disquette.</p>
+<p>Les fichiers à télécharger sont les suivants :</p>
+<ul>
+<li>Le génome de la <em>drosophile</em> au format fasta : dmel-MAIN-chromosome-r6.18.fasta</li>
+<li>Le fichier d'annotation au format gtf : dmel-all-r6.18.gtf</li>
+<li>Les fichiers baml filtrés et leurs index d'un des fichiers SF et d'un des fichiers WT : SF1_filtered.bam, SF1_filtered.bai, WT1_filtered.bam, WT1_filtered.bai</li>
+</ul>
+<p>Vous pouvez renommer les fichiers fasta et gtf pour leur donner des noms plus courts (exemple : dmel-r6.18.xxx). Ils seront plus lisibles dans IGV.</p>
+<div class="admonition danger">
+<p class="admonition-title">Attention</p>
+<p>Pour ces derniers les deux fichiers sont dans le même jeu de données. Il faut bien récupérer les deux, le jeux de données (.bam) et l'index (.bai).</p>
+</div>
+<p><img alt="Télécharger les fichiers bam" src="../img/igv/galaxy_download.png" title="Télécharger les fichiers bam" /></p>
+<hr />
+<h2 id="importer-un-genome-et-son-annotation-dans-igv">Importer un génome et son annotation dans IGV</h2>
+<p>Pour utiliser facilement IGV et retrouver ses données sur le long terme, il est vivement conseillé de travailler dans des sessions. Pour ouvrir une session, allez dans "File" et créer une nouvelle session en sélectionnant "New session".</p>
+<p>Plusieurs génomes sont disponibles sur le serveur d'IGV. Si vous travaillez avec un de ces génomes, vous n'avez qu’à simplement le choisir depuis le menu "Genomes" puis dans le menu déroulant proposé par "Select Hosted Genomes" (malheureusement cette fonction est bloquée sur notre VM).</p>
+<p>Vous allez importer manuellement le génome dans IGV. Pour cela dans le menu "Genomes", vous devez choisir "Load Genome from File". Une boîte de dialogue vous demande de sélectionner le fichier fasta contenant les séquences.</p>
+<p>Vous allez ensuite charger le fichier des annotations, décrites dans des fichiers .gff ou .gtf. Ce sont des fichiers tabulés qui associent par exemple un nom de gène à sa position dans le génome. Allez dans le menu "File", sélectionnez "Load from file" et sélectionnez le fichier d'annotation.</p>
+<div class="admonition danger">
+<p class="admonition-title">Attention</p>
+<p>Il est très important de toujours choisir le fichier d’annotation qui correspond à la version du génome que vous avez utilisé pour l’alignement. Sans cela vous courrez le risque de ne pas visualiser correctement vos données. Dans notre cas on utilise les mêmes fichiers que ceux utilisés pour Galaxy.</p>
+</div>
+<p>Sauvegardez votre session.</p>
+<hr />
+<h2 id="importer-vos-donnees">Importer vos données</h2>
+<p>IGV vous permet de visualiser un grand nombre de types de données. À chaque type correspond un ou des formats de fichiers. Les annotations peuvent être en gff, gtf ou bed, les données quantitatives doivent être au format wig, les données d'alignement doivent être en sam ou en bam. La description précise de chacun des types de fichiers supportés est <a href="http://www.broadinstitute.org/software/igv/FileFormats">disponible sur le site d'IGV</a>.</p>
+<p>Si vos fichiers sont correctement formatés, vous pouvez directement importer vos données dans votre session IGV. Il suffit d'aller dans le menu "File" et choisir "Load from File".</p>
+<p>Les données issues de séquençage peuvent être de plusieurs types. Ce sont soit des données d'alignement soit des données de couverture. Les données d'alignement peuvent être au format sam ou bam. Dans votre arborescence, vous devez avoir des fichiers bam triés (.bam) associés à des fichiers d'index (.bai). Ce couple est nécessaire mais c'est le bam que vous chargerez, IGV s'occupant de trouver l'index .bai dans le répertoire de façon automatique.</p>
+<p>IGV créez 2 pistes par fichier bam importé. Une des pistes concerne les données d'alignement proprement dites, la seconde concerne la couverture associée aux alignements. Elle est calculée à la volée de façon dynamique. Cette piste de couverture est indissociable de la piste d'alignement. Si vous supprimez cette piste, vous supprimez de fait la piste de couverture car le calcul ne peut plus se faire.</p>
+<p>Si vous voulez visualiser les alignements, il vous faut zoomer sur le génomes. Vous pouvez le faire en cliquant sur le bouton "+" en haut à droite ou bien en sélectionnant à la souris une zone sur la carte des chromosomes en haut.</p>
+<p><img alt="Visualisation des alignements" src="../img/igv/igv.png" title="Visualisation des alignements" /></p>
+<p>En effectuant un clic-droit sur une des pistes (track) vous avez accès à un grand nombre d'options de visualisation. Comme par exemple la possibilité de colorer les lectures en fonction du sens de l'alignement.</p>
+<p><img alt="Alignements colorés par brins" src="../img/igv/color_alignment.png" title="Alignements colorés par brins" /></p>
+<hr />
+<h2 id="calcul-de-la-couverture-avec-igvtools">Calcul de la couverture avec igvtools</h2>
+<p>La couverture s'affiche de façon dynamique, empêchant de la visualiser si le zoom n'est pas suffisant. Pour obtenir un affichage permanent nous allons charger les données de couverture. Ces données sont obtenues depuis le fichier bam trié via igvtools, qui est intégré dans IGV. Pour le lancer, allez dans le menu "Tools" puis choisir "Run igvtools".</p>
+<p><img alt="IGV tools" src="../img/igv/igv_tools.png" title="IGV tools" /></p>
+<p>L'exécution d'igvtool est plus ou moins longue selon la taille de votre fichier bam initial. À la fin du calcul, vous obtenez un fichier bam.tdf que vous pourrez charger dans IGV. C'est votre fichier de couverture. Depuis "File -&gt; Load From File", vous pouvez alors importer votre ou vos fichiers bam.tdf de couverture dans IGV.
+La résolution des couvertures pré-calculées est plus faible que celles calculées de façon dynamique mais on conserve tout de même une bonne partie de l'information. Il est alors possible de supprimer la piste en choisissant "Remove track" par un clic droit dans la colonne de gauche.</p>
+<p><img alt="Remove track" src="../img/igv/igv_coverage.png" title="Remove track" /></p>
+<p>Il est aussi possible de configurer la plage de données de chacune des pistes ou de toutes les pistes. Par défaut, les pistes sont en mode Autoscale, leur minimum et maximum est adapté aux données d'une seule piste pour favoriser la visualisation des données de chaque piste individuellement.</p>
+<p><img alt="Autoscale" src="../img/igv/igv_autoscale.png" title="Autoscale" /></p>
+<p>Quand il s'agit de comparer plusieurs pistes, il peut être plus intéressant de fixer le minimum et maximum du groupe de pistes de façon à rendre la visualisation facilement comparable. Il faut pour cela sélectionner les pistes puis effectuer un clic droit sur cette sélection et choisir "Set Data Range". La boite de dialogue indique par défaut la valeur minimum de ratio pour les pistes ainsi que la valeur maximale globale et la valeur médiane. Il suffit donc de valider cette plage de données pour appliquer la même échelle à votre groupe de pistes.</p>
+<p><img alt="Fixed scale" src="../img/igv/igv_fixedscale.png" title="Fixed scale" /></p>
+<hr />
+<h2 id="sauvegarder-vos-donnees">Sauvegarder vos données</h2>
+<p>Pour ne pas avoir à importer vos données à chaque utilisation d'IGV, il est impératif que vous n’oubliiez pas de sauvegarder votre session.</p>
+<p>Tous vos paramètres d'échelle, de couleurs, les chemins vers les données que vous avez importées sont stockés dans votre session. C'est un fichier de type xml. Pensez à le sauver à un endroit dont vous vous rappellerez.</p>
+<div class="admonition danger">
+<p class="admonition-title">Attention</p>
+<p>Ne mettez pas d'accents ou de caractères spéciaux dans les annotations que vous utiliserez, ainsi que dans votre arborescence de fichiers. IGV va enregistrer votre session en encodant vos caractères spéciaux mais ne sera plus capable de s'y retrouver quand vous souhaiterez rouvrir une session ainsi sauvegardée. </p>
+</div>
+<hr />
+<h2 id="ressources">Ressources</h2>
+<p>Vous pouvez récupérer les coordonnées génomiques des piARN stockés sur la <a href="https://www.pirnadb.org/download/archive/gff_gtf">piRNAdb</a> aux formats GTF et GFF</p>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../annexes/" class="btn btn-neutral float-right" title="4. Annexes">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../rnaseq/" class="btn btn-neutral" title="2. RNAseq"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../rnaseq/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../annexes/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme_extra.js" defer></script>
+    <script src="../js/theme.js" defer></script>
+      <script src="../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>

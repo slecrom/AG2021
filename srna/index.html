@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  
+  <link rel="shortcut icon" href="../img/favicon.ico">
+  <title>1. Petits ARN - Analyse des génomes 2021</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
+
+  <link rel="stylesheet" href="../css/theme.css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "1. Petits ARN";
+    var mkdocs_page_input_path = "srna.md";
+    var mkdocs_page_url = null;
+  </script>
+  
+  <script src="../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+        <a href=".." class="icon icon-home"> Analyse des génomes 2021</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="..">Accueil</a>
+                    </li>
+                </ul>
+                <ul class="current">
+                    <li class="toctree-l1 current"><a class="reference internal current" href="./">1. Petits ARN</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#controle-qualite-des-lectures">Contrôle qualité des lectures</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#suppression-des-sequences-des-adaptateurs">Suppression des séquences des adaptateurs</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#annotation-des-petits-arn">Annotation des petits ARN</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#alignement-des-lectures-sur-des-regions-specifiques-du-genome">Alignement des lectures sur des régions spécifiques du génome</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#comparaison-des-distributions-des-petits-arn-entre-conditions">Comparaison des distributions des petits ARN entre conditions</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#normalisation-des-echantillons">Normalisation des échantillons</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#distribution-des-lectures-par-taille">Distribution des lectures par taille</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#calcul-du-taux-daugmentation-des-pirna">Calcul du taux d’augmentation des piRNA</a>
+    </li>
+        </ul>
+    </li>
+    </ul>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../rnaseq/">2. RNAseq</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../igv/">3. IGV</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../annexes/">4. Annexes</a>
+                    </li>
+                </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="..">Analyse des génomes 2021</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="..">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>1. Petits ARN</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  
+  <hr/>
+</div>
+
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="1-traitement-des-donnees-des-petits-arn">1. Traitement des données des petits ARN</h1>
+<div class="admonition attention">
+<p class="admonition-title">Objectif</p>
+<p>Le but de cette séance de Travaux Pratiques est d’effectuer le traitement des données du séquençage des petits ARN. À la fin de la séance vous devez pouvoir comparer les profils d’expression des petits ARN dans les différentes conditions d’étude.</p>
+</div>
+<div class="admonition hint">
+<p>Les questions posées tout au long de cette page sont là pour vous guider dans votre analyse, pour vous aider à comprendre ce que vous faites et ainsi mieux appréhender vos résultats. Elles ne sont en aucun cas la base de l’évaluation de votre travail.</p>
+</div>
+<p>Commencer par créer un nouvel historique et donnez lui un nom court et explicite comme "small RNA analyses"</p>
+<p>Copier les données GRH-103 et GRH-105. Reportez vous aux <a href="../annexes/">annexes</a> pour savoir comment copier les données entre historiques.</p>
+<p>Ensuite <a href="https://artbio.github.io/startbio/Run-Galaxy/Loading_data_in_galaxy/#a-making-a-collection-of-the-small-rna-sequence-datasets">créez une collection avec ce jeu de données (dataset)</a> mais sans cacher les données d'origines.</p>
+<hr />
+<h2 id="controle-qualite-des-lectures">Contrôle qualité des lectures</h2>
+<div class="admonition note">
+<p class="admonition-title">FastQC</p>
+<p>Pour afficher plusieurs graphiques permettant d’évaluer de façon automatique la qualité des lectures obtenues, nous allons utiliser le logiciel <strong>FastQC</strong>. Il est disponible sur les principaux systèmes d’exploitation actuels (Windows, MacOS et Linux) et peut-être utilisé avec une interface graphique ou bien en ligne de commande. Vous pouvez télécharger l'outil et consulter son mode d’emploi <a href="https://www.bioinformatics.babraham.ac.uk/projects/fastqc/">sur son site internet</a></p>
+</div>
+<p>Dans Galaxy vous allez utiliser l’outil <strong><em>FastQC Read Quality reports</em></strong></p>
+<p><img alt="FastQC" src="../img/srna/qc.png" title="FastQC" /></p>
+<p>En vous aidant de la notice d’utilisation du logiciel, regardez les résultats du contrôle de qualité effectué par FastQC sur votre fichier fastq.</p>
+<div class="admonition hint">
+<p class="admonition-title">Questions</p>
+<ul>
+<li>Combien de lectures avez-vous dans votre fichier ?</li>
+<li>Quelle est la version du format fastq utilisée (voir wikipedia) ?</li>
+<li>Les lectures sont-elles de bonne qualité pour poursuivre l’analyse ?</li>
+<li>Pouvez-vous observer des biais particuliers à prendre en compte pour la suite ?</li>
+</ul>
+</div>
+<hr />
+<h2 id="suppression-des-sequences-des-adaptateurs">Suppression des séquences des adaptateurs</h2>
+<p>Les séquences obtenues sont plus longues que celles des petits ARN que l’on veut étudier. Elles contiennent donc les séquences des adaptateurs situées en 3’. Nous allons réaliser une étape de <strong>clipping</strong> qui consiste à supprimer les adaptateurs présents dans les séquences.</p>
+<p>On va également profiter de cette étape pour ne conserver que les séquences de tailles comprises entre 18 et 30, celles correspondants aux petits ARN que nous voulons étudier.</p>
+<p>Vous allez pour cela utiliser l’outil <strong><em>Clip adapter</em></strong>.</p>
+<p><img alt="Clipping des adaptateurs" src="../img/srna/clipping.png" title="Clipping des adaptateurs" /></p>
+<p>Sur les fichiers fastq obtenus en sortie de cette étape de clipping, relancez une analyse de la qualité des séquences avec l’outil <strong><em>FastQC</em></strong>.</p>
+<div class="admonition hint">
+<p class="admonition-title">Questions</p>
+<ul>
+<li>Combien de lectures avez-vous conservé dans votre fichier ?</li>
+<li>Quel pourcentage des séquences de départ cela représente-t-il ?</li>
+<li>L’étape de clipping a-t-elle bien réalisé ce que vous souhaitiez ?</li>
+<li>Que pensez-vous de la distribution de taille des séquences ?</li>
+</ul>
+</div>
+<hr />
+<h2 id="annotation-des-petits-arn">Annotation des petits ARN</h2>
+<p>L’objectif de cette étape est d’annoter les éléments génomiques dans lesquels s’alignent les petits ARN qui ont été séquencés. Pour cela vous allez réaliser une série d’alignements avec le logiciel <strong>bowtie</strong> contre différentes banques d’éléments génomique de la drosophile.</p>
+<p>Pour ce TP vous allez utiliser la version 6.18 du génome de <em>Drosophila melanogaster</em> dont les fichiers de séquence au format fasta sont accessibles sur le <a href="http://ftp.flybase.net/genomes/Drosophila_melanogaster/dmel_r6.18_FB2017_05/fasta/">site FTP de Flybase</a></p>
+<p>Dans la liste des éléments disponibles vous aller récupérer les fichiers de séquences des :</p>
+<ul>
+<li>Gènes : genes</li>
+<li>Introns : introns</li>
+<li>miRNA : miRNA</li>
+<li>ARN non codants : ncRNA</li>
+<li>piRNA clusters connus (142) : piRNA_clusters</li>
+<li>Transposons : all-transposons</li>
+<li>ARN divers qui contiennent les séquences des ribosomes et des snoRNA : miscRNA</li>
+<li>ARN de transferts : tRNA</li>
+<li>Transcrits : transcrits</li>
+<li>Et le génome de la drosophile : dmel-all-chromosome-r6.18</li>
+</ul>
+<p>Comme pour cette étape l’objectif est d’obtenir rapidement les fichiers d’alignements on va se concentrer sur la récupération des meilleurs alignements possibles. En vous aidant de la <a href="http://bowtie-bio.sourceforge.net/manual.shtml">documentation du logiciel bowtie</a>, répondez aux questions ci-dessous.</p>
+<div class="admonition hint">
+<p class="admonition-title">Questions</p>
+<ul>
+<li>Quelles sont les options qui vont permettre d’accélérer la vitesse de calcul ?</li>
+<li>Quelle option choisir pour ne conserver que le meilleur alignement ?</li>
+<li>Comment limiter le nombre de mismatch sur toute la séquence ?</li>
+</ul>
+</div>
+<p>Nous allons utiliser l’outil <strong><em>sR_bowtie</em></strong> sur les données clippées en alignant les lectures sur un fichier d’éléments du génome de la drosophile obtenu précédemment.</p>
+<p>Reportez vous aux <a href="../annexes/">annexes</a> pour savoir comment copier les données entre historiques des fichiers fasta de référence dont vous avez besoin.</p>
+<p><img alt="Annotation" src="../img/srna/annotation.png" title="Annotation" /></p>
+<div class="admonition hint">
+<p class="admonition-title">Questions</p>
+<ul>
+<li>Combien d’alignements ont été trouvés ?</li>
+<li>Combien de lectures n’ont pas été alignées ?</li>
+<li>Combien d’alignements ont été filtrés avec les options que vous avez choisies ?</li>
+</ul>
+</div>
+<p>Pour chacun des éléments d’annotation (sans oublier le génome complet de la drosophile) reportez dans un tableau le nombre et le pourcentage de lectures obtenu après chaque alignement.</p>
+<p>Comme vous êtes plusieurs à travailler sur les mêmes fichiers, répartissez-vous le travail.</p>
+<div class="admonition hint">
+<p class="admonition-title">Questions</p>
+<ul>
+<li>Où retrouvez-vous principalement les petits ARN ?</li>
+<li>Cette répartition correspond-elle à ce que vous attendiez ?</li>
+</ul>
+</div>
+<p>La sortie standard et l’erreur standard sont accessibles dans Galaxy. Pour cela vous devez cliquer dans votre jeu de données sur l’icône d’information (i). La page qui s’affiche vous donne accès aux paramètres de lancement de l’outil utilisé et aux différentes sorties produites.</p>
+<p><img alt="Sortie et erreur standard" src="../img/srna/sortie_standard.png" title="Sortie et erreur standard" /></p>
+<hr />
+<h2 id="alignement-des-lectures-sur-des-regions-specifiques-du-genome">Alignement des lectures sur des régions spécifiques du génome</h2>
+<p>Pour aller plus loin dans l’analyse des loci producteurs de piRNA, vous allez aligner spécifiquement les séquences que vous avez obtenues sur des régions génomiques d’intérêt. La première d’entre elle est celle du transgène <strong>P{lacW}</strong>.</p>
+<p>Reportez vous aux <a href="../annexes/">annexes</a> pour savoir comment copier les données entre historiques pour récupérer la séquence fasta de P{lacW}.</p>
+<p>Nous allons utiliser l’outil <strong><em>sR_bowtie</em></strong> sur les données clippées en alignant les lectures sur le fichier que l’on vient de télécharger. On cherche maintenant à obtenir des alignements uniques sans ambiguïtés.</p>
+<div class="admonition hint">
+<p class="admonition-title">Questions</p>
+<ul>
+<li>Quelle option de sRbowtie allez-vous choisir ?</li>
+<li>À quels paramètres du logiciel bowtie cette option correspond-elle ?</li>
+</ul>
+</div>
+<p>Lancez l’alignement une fois que vous avez déterminé les paramètres optimaux pour votre analyse.</p>
+<p><img alt="Alignement sur P{lacW}" src="../img/srna/bowtie_placw.png" title="Alignement sur P{lacW}" /></p>
+<hr />
+<h2 id="comparaison-des-distributions-des-petits-arn-entre-conditions">Comparaison des distributions des petits ARN entre conditions</h2>
+<p>Vous allez maintenant comparer la distribution des petits ARN sur des régions spécifiques du génome de la drosophile entre les différentes conditions biologiques que vous avez étudiées pendant la partie expérimentale.</p>
+<h3 id="normalisation-des-echantillons">Normalisation des échantillons</h3>
+<p>Avant de pouvoir comparer les distributions des lectures entre elles, vous devez d’abord normaliser les échantillons entre eux. Pour cela vous allez calculer deux facteurs de normalisation (Scaling Factor) à l’aide des mesures suivantes :</p>
+<ol>
+<li>Nombre de lecture alignées sur le génome de la drosophile - nombre de lectures alignées sur la banque « divers » - nombre de lectures alignées sur les « tRNA » ;</li>
+<li>Nombre de lectures alignées sur les miRNA.</li>
+</ol>
+<p>Dans chaque cas vous utiliserez l’échantillon ayant le moins de lecture comme référence pour calculer vos facteurs de normalisations (NF1 et NF2).</p>
+<div class="admonition hint">
+<p class="admonition-title">Questions</p>
+<ul>
+<li>Quels sont les facteurs de normalisation que vous obtenez ?</li>
+<li>Avez-vous de grandes différences entre les deux méthodes de calcul ?</li>
+<li>Quelle est selon vous la meilleure méthode de normalisation ?</li>
+</ul>
+</div>
+<h3 id="distribution-des-lectures-par-taille">Distribution des lectures par taille</h3>
+<p>Vous allez ensuite réaliser des graphiques et quantifier la répartition des 3 types de petits ARN (miRNA, siRNA et piRNA) produits pour la séquence de P{lacW} à partir des lectures dans vos différents échantillons. Pour cela vous utiliserez l’outil <strong><em>small_rna_maps</em></strong> sur chacun de vos fichiers d’alignement en prenant soin d’indiquer pour chacun le facteur de normalisation permettant de corriger les lectures.</p>
+<p><img alt="Distribution des lectures par taille" src="../img/srna/small_rna_maps.png" title="Distribution des lectures par taille" /></p>
+<div class="admonition hint">
+<p class="admonition-title">Question</p>
+<ul>
+<li>Quelle interprétation faites-vous des histogrammes que vous obtenez ?</li>
+</ul>
+</div>
+<h3 id="calcul-du-taux-daugmentation-des-pirna">Calcul du taux d’augmentation des piRNA</h3>
+<p>Vous allez maintenant calculer le ratio d’augmentation des piRNA dans le contexte mutant. Téléchargez (icône en forme de disquette) les données obtenues en même temps que le graphique de distribution de taille. Elles vous permettent de récupérer le nombre normalisé de lecture de la taille voulue. En utilisant un tableur vous pouvez additionner les comptages piRNA (entre 23 et 29 nucléotides) et faire le rapport entre les différents génotypes.</p>
+<p><img alt="Données de distribution" src="../img/srna/data_size.png" title="Données de distribution" /></p>
+<p><img alt="Calcul du ratio d'augmentation" src="../img/srna/ratio_pirna.png" title="Calcul du ratio d'augmentation" /></p>
+<div class="admonition hint">
+<p class="admonition-title">Question</p>
+<ul>
+<li>Quel ratio d'augmentation des piRNA en contexte mutant obtenez-vous ?</li>
+</ul>
+</div>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../rnaseq/" class="btn btn-neutral float-right" title="2. RNAseq">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href=".." class="btn btn-neutral" title="Accueil"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href=".." style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../rnaseq/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme_extra.js" defer></script>
+    <script src="../js/theme.js" defer></script>
+      <script src="../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>
