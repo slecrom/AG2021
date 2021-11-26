@@ -1,4 +1,6 @@
 site_name: Analyse des génomes 2021
+repo_url: https://github.com/slecrom/AG2021
+
 nav:
     - Accueil: index.md
     - 1. Petits ARN: srna.md
